@@ -5,8 +5,8 @@ const App = () => {
 	const NUMS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 	const arrOperators = ["+", "-", "=", "C"];
 
-	const [operand1, setOperand1] = useState("");
-	const [operand2, setOperand2] = useState("");
+	const [operand1, setOperand1] = useState(0);
+	const [operand2, setOperand2] = useState(0);
 	const [operator, setOperator] = useState("");
 
 	const [display, setDisplay] = useState("");
@@ -17,29 +17,33 @@ const App = () => {
 
 	const handlerResetDisplay = () => {
 		setDisplay("");
-		setOperand1("");
-		setOperand2("");
+		setOperand1(0);
+		setOperand2(0);
 		setOperator("");
 	};
 
 	const handlerCalculate = () => {
 		const arr = display.match(/\d+|[+\-/]/g);
 
-		if (arr[1] === "+") {
+		// Когда ввели одно значение и оператор
+		if (arr.length === 2) {
 			if (arr[0] === "+") {
 				setDisplay(0 + Number(arr[1]));
 			} else {
+				setDisplay(0 - Number(arr[1]));
+			}
+			// Когда ввели два значения и оператор
+		} else {
+			if (arr[1] === "+") {
 				setDisplay(Number(arr[0]) + Number(arr[2]));
 			}
-		} else {
-			if (arr[0] === "-") {
-				setDisplay(0 - Number(arr[1]));
-			} else {
+
+			if (arr[1] === "-") {
 				setDisplay(Number(arr[0]) - Number(arr[2]));
 			}
 		}
 
-		setOperand1("");
+		setOperand1(display);
 		setOperand2("");
 		setOperator("");
 	};
@@ -92,11 +96,6 @@ const App = () => {
 										handlerUpdateDisplay(item);
 										setOperator(item);
 									}}
-									disabled={
-										operator === "+" || operator === "-"
-											? true
-											: false
-									}
 								>
 									{item}
 								</button>
@@ -127,11 +126,6 @@ const App = () => {
 										handlerUpdateDisplay(item);
 										setOperator(item);
 									}}
-									disabled={
-										operator === "+" || operator === "-"
-											? true
-											: false
-									}
 								>
 									{item}
 								</button>
